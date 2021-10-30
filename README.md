@@ -1,2 +1,2 @@
 # SuperAdam
-Official Pytorch Implementation for the paper 'SUPER-ADAM: Faster and Universal Framework of Adaptive Gradients'
+Official Pytorch implementation for the paper 'SUPER-ADAM: Faster and Universal Framework of Adaptive Gradients'
