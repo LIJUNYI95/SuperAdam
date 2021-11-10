@@ -1,7 +1,6 @@
 import math
 import torch
 from torch.optim.optimizer import Optimizer
-import pdb
 from collections import defaultdict
 from torch import Tensor
 from typing import List
