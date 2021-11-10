@@ -84,7 +84,7 @@ def train(epoch):
     for batch_idx, (inputs, targets) in enumerate(trainloader):
         inputs, targets = inputs.to(device), targets.to(device)
 
-        if not args.__class__use_adam:
+        if not args.use_adam:
             cur_state_dict = {}
             for k, v in net.state_dict().items():
                 cur_state_dict[k] = v.data.clone()
