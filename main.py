@@ -16,10 +16,10 @@ from utils import progress_bar
 from SuperAdam import SuperAdam
 
 parser = argparse.ArgumentParser(description='PyTorch CIFAR10 Training')
-parser.add_argument('--lr', default=3, type=float, help='learning rate')
-parser.add_argument('--m', default=2400, type=float, help='w')
-parser.add_argument('--c', default=2, type=float, help='c')
-parser.add_argument('--gamma', default=0.03, type=float, help='gamma')
+parser.add_argument('--lr', default=1, type=float, help='learning rate')
+parser.add_argument('--m', default=100, type=float, help='w')
+parser.add_argument('--c', default=40, type=float, help='c')
+parser.add_argument('--gamma', default=0.001, type=float, help='gamma')
 parser.add_argument('--beta', default=0.999, type=float, help='beta')
 parser.add_argument('--use_adam', dest='use_adam', action='store_true')
 parser.add_argument('--coordinate_global_size', dest='coordinate_global_size', action='store_true')
