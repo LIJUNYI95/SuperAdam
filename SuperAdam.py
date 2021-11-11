@@ -120,7 +120,7 @@ class SuperAdam(Optimizer):
                     exp_avgs.append(state['exp_avg'])
                     
             eta = group['lr']/(group['m'] + state['step'])**(1/3)
-            alpha = min(max(group['c'] * (eta)**2, 0.7), 0.99) #superadam
+            alpha = min(group['c'] * (eta)**2, 0.99) #superadam
             for i, _ in enumerate(params_with_grad):
                 grad = grads[i]
                 exp_avg = exp_avgs[i]
