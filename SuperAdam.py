@@ -41,7 +41,7 @@ class SuperAdam(Optimizer):
         """
 
         defaults = dict(tau = tau, k=k, beta=beta, eps=eps, c=c, m=m, gamma=gamma,\
-            global_H = glob_H, coord_global_H=coord_glob_H)
+            glob_H = glob_H, coord_global_H=coord_glob_H)
         super(SuperAdam, self).__init__(params, defaults)
 
     def __setstate__(self, state):
