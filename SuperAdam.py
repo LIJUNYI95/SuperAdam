@@ -98,7 +98,7 @@ class SuperAdam(Optimizer):
                    grad_norm_sum,
                    state_steps,
                    group['glob_H'],
-                   group['coord_global_H'],
+                   group['coord_glob_H'],
                    group['tau'],
                    group['beta'],
                    group['k'],
