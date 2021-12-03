@@ -16,14 +16,15 @@ from utils import progress_bar
 from SuperAdam import SuperAdam
 
 parser = argparse.ArgumentParser(description='PyTorch CIFAR10 Training')
-parser.add_argument('--lr', default=1, type=float, help='learning rate')
-parser.add_argument('--m', default=100, type=float, help='w')
-parser.add_argument('--c', default=40, type=float, help='c')
-parser.add_argument('--gamma', default=0.001, type=float, help='gamma')
-parser.add_argument('--beta', default=0.999, type=float, help='beta')
-parser.add_argument('--use_adam', dest='use_adam', action='store_true')
-parser.add_argument('--coordinate_global_size', dest='coordinate_global_size', action='store_true')
-parser.add_argument('--global_size', dest='global_size', action='store_true')
+parser.add_argument('--k', default=1, type=float, help='scaling coefficient of mu')
+parser.add_argument('--m', default=100, type=float, help='offset coefficient of mu')
+parser.add_argument('--c', default=40, type=float, help='coefficient of the momentum')
+parser.add_argument('--gamma', default=0.001, type=float, help='scaling coefficient of the quadratic optimization problem')
+parser.add_argument('--beta', default=0.999, type=float, help='exponential average coefficient')
+parser.add_argument('--tau', dest='use_adam', action='store_true', help='if set True: use storm-like variance reduction update, \
+    otherwise: use adam-like momentum update')
+parser.add_argument('--coord_glob_H', dest='coord_glob_H', action='store_true', help='alternative choice of H')
+parser.add_argument('--glob_H', dest='glob_H', action='store_true', help='alternative choice of H')
 
 
 args = parser.parse_args()
@@ -55,8 +56,7 @@ testset = torchvision.datasets.CIFAR10(
 testloader = torch.utils.data.DataLoader(
     testset, batch_size=100, shuffle=False, num_workers=2)
 
-classes = ('plane', 'car', 'bird', 'cat', 'deer',
-           'dog', 'frog', 'horse', 'ship', 'truck')
+classes = ('plane', 'car', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck')
 
 # Model
 print('==> Building model..')
@@ -67,8 +67,8 @@ if device == 'cuda':
     cudnn.benchmark = True
 
 criterion = nn.CrossEntropyLoss()
-optimizer = SuperAdam(net.parameters(), lr=args.lr, c=args.c, m=args.m, gamma=args.gamma, beta=args.beta, \
-    global_size=args.global_size, coordinate_global_size=args.coordinate_global_size, use_adam=args.use_adam)
+optimizer = SuperAdam(net.parameters(), k=args.k, c=args.c, m=args.m, gamma=args.gamma, beta=args.beta, \
+    glob_H=args.glob_H, coord_glob_H=args.coord_glob_H, tau=args.tau)
 
 old_state_dict = {}
 acc_save = []; train_acc_save = []
@@ -164,14 +164,14 @@ if not os.path.isdir('SuperAdam_results'):
 postfix = '-' + str(args.lr) + '-' + str(args.m) + '-' + str(args.c) + '-' + str(args.gamma) + '-' + str(args.beta)
 
 prefix = ''
-if args.global_size:
-    prefix = '_global_coordinate'
-elif args.coordinate_global_size:
-    prefix = '_coordinate_global'
+if args.glob_H:
+    prefix = '_glob_H'
+elif args.coord_glob_H:
+    prefix = '_coord_glob_H'
 else:
     prefix = '_super_adam'
     
-if args.use_adam:
+if args.tau:
     prefix += '_adam_like'
 postfix = prefix + postfix
 
