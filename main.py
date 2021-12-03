@@ -16,10 +16,10 @@ from utils import progress_bar
 from SuperAdam import SuperAdam
 
 parser = argparse.ArgumentParser(description='PyTorch CIFAR10 Training')
-parser.add_argument('--k', default=1, type=float, help='scaling coefficient of mu')
-parser.add_argument('--m', default=100, type=float, help='offset coefficient of mu')
-parser.add_argument('--c', default=40, type=float, help='coefficient of the momentum')
-parser.add_argument('--gamma', default=0.001, type=float, help='scaling coefficient of the quadratic optimization problem')
+parser.add_argument('--k', default=3, type=float, help='scaling coefficient of mu')
+parser.add_argument('--m', default=2400, type=float, help='offset coefficient of mu')
+parser.add_argument('--c', default=2, type=float, help='coefficient of the momentum')
+parser.add_argument('--gamma', default=0.03, type=float, help='scaling coefficient of the quadratic optimization problem')
 parser.add_argument('--beta', default=0.999, type=float, help='exponential average coefficient')
 parser.add_argument('--tau', dest='tau', action='store_true', help='if set True: use storm-like variance reduction update, \
     otherwise: use adam-like momentum update')
@@ -32,7 +32,6 @@ device = 'cuda' if torch.cuda.is_available() else 'cpu'
 best_acc = 0
 start_epoch = 0
 
-print(args.tau)
 
 # Data
 print('==> Preparing data..')
