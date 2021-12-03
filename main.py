@@ -32,6 +32,8 @@ device = 'cuda' if torch.cuda.is_available() else 'cpu'
 best_acc = 0
 start_epoch = 0
 
+print(args.tau)
+
 # Data
 print('==> Preparing data..')
 transform_train = transforms.Compose([
@@ -84,7 +86,7 @@ def train(epoch):
     for batch_idx, (inputs, targets) in enumerate(trainloader):
         inputs, targets = inputs.to(device), targets.to(device)
 
-        if not args.use_adam:
+        if args.tau:
             cur_state_dict = {}
             for k, v in net.state_dict().items():
                 cur_state_dict[k] = v.data.clone()
@@ -161,7 +163,7 @@ def test(epoch):
 dire = 'SuperAdam_results/'
 if not os.path.isdir('SuperAdam_results'):
     os.mkdir('SuperAdam_results')
-postfix = '-' + str(args.lr) + '-' + str(args.m) + '-' + str(args.c) + '-' + str(args.gamma) + '-' + str(args.beta)
+postfix = '-' + str(args.k) + '-' + str(args.m) + '-' + str(args.c) + '-' + str(args.gamma) + '-' + str(args.beta)
 
 prefix = ''
 if args.glob_H:
@@ -187,4 +189,4 @@ for epoch in range(start_epoch, start_epoch+201):
 
     if epoch == 100 or epoch == 150: 
         for group in optimizer.param_groups:
-            group['lr'] /= 2
+            group['k'] /= 2
