@@ -41,7 +41,7 @@ class SuperAdam(Optimizer):
         """
 
         defaults = dict(tau = tau, k=k, beta=beta, eps=eps, c=c, m=m, gamma=gamma,\
-            glob_H = glob_H, coord_global_H=coord_glob_H)
+            glob_H = glob_H, coord_glob_H=coord_glob_H)
         super(SuperAdam, self).__init__(params, defaults)
 
     def __setstate__(self, state):
@@ -82,7 +82,7 @@ class SuperAdam(Optimizer):
                     exp_avgs.append(state['exp_avg'])
                     exp_avg_sqs.append(state['exp_avg_sq'])
                     
-                    if group['glob_size']:
+                    if group['glob_H']:
                         grad_norm_sum.append(state['grad_norm_sum'])
 
 
